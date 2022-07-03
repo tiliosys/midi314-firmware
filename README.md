@@ -15,4 +15,18 @@ As a result, midi@3:14 has the following characteristics:
 
 ![midi@3:14 keyboard assembly](images/final-assembly.jpg)
 
-This repository contains the Arduino sketches for the Pro Micro module.
+This repository contains two Arduino sketches for the Pro Micro module:
+
+* `midi314-keyboard`: the firmware of the MIDI keyboard.
+* `midi314-joystick`: the firmware of an additional MIDI controller composed of a joystick and a pressure sensor to be used as a breath interface.
+
+Build and upload instructions
+=============================
+
+Using the Arduino CLI:
+
+```
+arduino-cli core install arduino:avr
+arduino-cli compile --fqbn arduino:avr:leonardo --libraries libraries midi314-keyboard
+arduino-cli upload --fqbn arduino:avr:leonardo --port /dev/ttyACM0 midi314-keyboard
+```
