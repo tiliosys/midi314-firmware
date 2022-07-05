@@ -46,15 +46,15 @@ pw-mididump
 In another terminal, list the available MIDI output ports and locate the port name assigned to the Arduino module:
 
 ```
-pw-link -o
+pw-link -o | grep Arduino
 ```
 
-The result should contain a port name like this: `Midi-Bridge:Arduino Leonardo:(capture_0) Arduino Leonardo MIDI 1`
+This command should print a port name like this: `Midi-Bridge:Arduino Leonardo:(capture_0) Arduino Leonardo MIDI 1`
 
 List the available MIDI input ports and locate the port of `pw-mididump`.
 
 ```
-pw-link -i
+pw-link -i | grep dump
 ```
 
 You should get: `midi-dump:input`.
@@ -71,13 +71,25 @@ Check that `pw-mididump` prints the MIDI messages from the keyboard.
 Playing sound
 =============
 
-You can use the synthesizer [fluidsynth](https://www.fluidsynth.org/).
-
-When `fluidsynth` is executing, the command `pw-link -i` should print a MIDI port name like this:
-`Midi-Bridge:FLUID Synth (141542):(playback_0) Synth input port (141542:0)`.
-
-Connect the keyboard's MIDI port to `fluidsynth`:
+We will run the synthesizer [FluidSynth](https://www.fluidsynth.org/) from the command line
+with a custom MIDI port name like this:
 
 ```
-pw-link "Midi-Bridge:Arduino Leonardo:(capture_0) Arduino Leonardo MIDI 1" "Midi-Bridge:FLUID Synth (141542):(playback_0) Synth input port (141542:0)"
+fluidsynth -p FluidSynth
 ```
+
+You can check the MIDI port name associated with FluidSynth by executing this command:
+
+```
+pw-link -i | grep FluidSynth
+```
+
+It should print `Midi-Bridge:FluidSynth:(playback_0) FluidSynth`.
+
+Connect the keyboard's MIDI port to FluidSynth:
+
+```
+pw-link "Midi-Bridge:Arduino Leonardo:(capture_0) Arduino Leonardo MIDI 1" "Midi-Bridge:FluidSynth:(playback_0) FluidSynth"
+```
+
+... and play some notes.
