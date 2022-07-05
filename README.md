@@ -20,8 +20,84 @@ This repository contains two Arduino sketches for the Pro Micro module:
 * `midi314-keyboard`: the firmware of the MIDI keyboard.
 * `midi314-joystick`: the firmware of an additional MIDI controller composed of a joystick and a pressure sensor to be used as a breath interface.
 
+Keyboard layout
+---------------
+
+This figure shows the keymap of midi@3:14.
+
+![midi@3:14 layout](images/layout.svg)
+
+When the `Fn` key is released the other keys are used to play notes.
+The top part of the figure corresponds to the initial note mapping, before any
+pitch shift.
+
+When the `Fn` key is pressed, the bottom part of the figure shows the special function
+attached to each key.
+
+| Abbreviation  | Function                                             |
+|:--------------|:-----------------------------------------------------|
+| `O-`          | Tune the keyboard one octave down.                   |
+| `O+`          | Tune the keyboard one octave up.                     |
+| `S-`          | Tune the keyboard one semitone down.                 |
+| `S+`          | Tune the keyboard one semitone up.                   |
+| `T-`          | Tempo down.                                          |
+| `T+`          | Tempo up.                                            |
+| `TT`          | Tap tempo.                                           |
+| `P#`          | Instrument selection (MIDI Program Change).          |
+| `P-`          | Previous 10 instruments.                             |
+| `P+`          | Next 10 instruments.                                 |
+| `Mono`        | Toggle monophonic/polyphonic mode                    |
+| `Per`         | Toggle the percussion (channel 10) instrument mode   |
+| `L#`          | Record, start, mute a loop.                          |
+| `Del` + `L#`  | Delete a loop.                                       |
+| `Solo` + `L#` | Mute all other loops and play the selected one only. |
+| `All`         | Unmute all muted loops.                              |
+| `Off`         | All notes off                                        |
+
+While recording a loop, pressing `Fn` alone stops the recording and starts the loop.
+
+Potentiometers have the following functions:
+
+| Pot | Function       |
+|:----|:---------------|
+| 1   | Channel volume |
+| 2   | Balance        |
+| 3   | Reverb         |
+| 4   | Chorus         |
+| 5   | Modulation     |
+
+MIDI events
+-----------
+
+The keyboard relies on several standard and custom MIDI events.
+When the `Fn` key is released, the other keys trigger note-on and note-off events.
+
+This table shows the Control-Change events that are currently supported:
+
+| Identifier | Event                           |
+|:-----------|:--------------------------------|
+| 1          | Modulation                      |
+| 2          | Breath                          |
+| 7          | Channel volume                  |
+| 10         | Pan                             |
+| 11         | Expression                      |
+| 91         | Reverb                          |
+| 93         | Chorus                          |
+| 123        | All notes off                   |
+| 126        | Mono mode on                    |
+| 127        | Poly mode on                    |
+| 20         | Start recording a loop (custom) |
+| 21         | Play a loop (custom)            |
+| 22         | Mute a loop (custom)            |
+| 23         | Delete a loop (custom)          |
+| 24         | Mute all other loops (custom)   |
+| 25         | Unmute all muted loops (custom) |
+| 26         | Set min pitch (custom)          |
+| 27         | Set min program (custom)        |
+| 28         | Toggle percussion mode (custom) |
+
 Build and upload instructions
-=============================
+-----------------------------
 
 Using the Arduino CLI:
 
@@ -32,7 +108,7 @@ arduino-cli upload --fqbn arduino:avr:leonardo --port /dev/ttyACM0 midi314-keybo
 ```
 
 Monitoring the MIDI port
-========================
+------------------------
 
 If your Linux distribution supports Pipewire, you can use `pw-link` to manage MIDI connections,
 and `pw-mididump` to print the MIDI messages from the keyboard.
@@ -69,7 +145,7 @@ Press the keys of the keyboard and turn the potentiometers.
 Check that `pw-mididump` prints the MIDI messages from the keyboard.
 
 Playing sound
-=============
+-------------
 
 We will run the synthesizer [FluidSynth](https://www.fluidsynth.org/) from the command line
 with a custom MIDI port name like this:
