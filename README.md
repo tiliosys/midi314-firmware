@@ -81,11 +81,6 @@ This table shows the Control-Change events that are currently supported:
 | 7          | Channel volume                  |
 | 10         | Pan                             |
 | 11         | Expression                      |
-| 91         | Reverb                          |
-| 93         | Chorus                          |
-| 123        | All notes off                   |
-| 126        | Mono mode on                    |
-| 127        | Poly mode on                    |
 | 20         | Start recording a loop (custom) |
 | 21         | Play a loop (custom)            |
 | 22         | Mute a loop (custom)            |
@@ -95,6 +90,11 @@ This table shows the Control-Change events that are currently supported:
 | 26         | Set min pitch (custom)          |
 | 27         | Set min program (custom)        |
 | 28         | Toggle percussion mode (custom) |
+| 91         | Reverb                          |
+| 93         | Chorus                          |
+| 123        | All notes off                   |
+| 126        | Mono mode on                    |
+| 127        | Poly mode on                    |
 
 Build and upload instructions
 -----------------------------
